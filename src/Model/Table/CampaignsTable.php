@@ -1,9 +1,12 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\Campaign;
+use App\Model\Entity\User;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\Mailer\MailerAwareTrait;
 use Cake\Validation\Validator;
 
 /**
@@ -29,6 +32,8 @@ class CampaignsTable extends Table
     const STATUS_NEW = 'new';
     const STATUS_IN_PROGRESS = 'in-progress';
     const STATUS_COMPLETED = 'completed';
+
+    use MailerAwareTrait;
 
     /**
      * Initialize method
@@ -105,5 +110,28 @@ class CampaignsTable extends Table
         $rules->add($rules->existsIn(['template_id'], 'Templates'));
 
         return $rules;
+    }
+
+    public function send($id)
+    {
+        $campaign = $this->get($id, [
+            'contain' => ['Templates', 'MailingLists.Users']
+        ]);
+
+        // NOTE: this query should be improved, left as a simple example
+        foreach ($campaign->mailing_lists as $mailing_list) {
+            foreach ($mailing_list->users as $user) {
+                $this->emailMerge($campaign, $user);
+            }
+        }
+
+        return true;
+    }
+
+    public function emailMerge(Campaign $campaign, User $user)
+    {
+        $subjectTemplate = $campaign->template['subject'];
+        $bodyTemplate = $campaign->template['body'];
+        $this->getMailer('Campaign')->send('merge', compact('user', 'subjectTemplate', 'bodyTemplate'));
     }
 }
