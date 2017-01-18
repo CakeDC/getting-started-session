@@ -103,6 +103,7 @@ class CampaignsTable extends Table
                 },
                 'on' => function ($context) {
                     $now = Time::now();
+
                     return ($now->isSaturday() || $now->isSunday());
                 },
                 'message' => __('Campaigns can only be set as in-progress in week days')
@@ -137,8 +138,8 @@ class CampaignsTable extends Table
         }
 
         // NOTE: this query should be improved, left as a simple example
-        foreach ($campaign->mailing_lists as $mailing_list) {
-            foreach ($mailing_list->users as $user) {
+        foreach ($campaign->mailing_lists as $mailingList) {
+            foreach ($mailingList->users as $user) {
                 $this->emailMerge($campaign, $user);
             }
         }

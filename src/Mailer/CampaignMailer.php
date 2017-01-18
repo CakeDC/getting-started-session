@@ -1,8 +1,10 @@
 <?php
 namespace App\Mailer;
+
 use Cake\Mailer\Mailer;
 use Cake\Utility\Hash;
 use Cake\Utility\Text;
+
 /**
  * Campaign mailer.
  */
@@ -23,6 +25,7 @@ class CampaignMailer extends Mailer
             'after' => '}}'
         ];
         $subject = Text::insert($subjectTemplate, $variables, $options);
+
         return $this
             ->to($user['email'])
             ->template('campaign')

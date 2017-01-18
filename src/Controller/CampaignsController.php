@@ -120,10 +120,10 @@ class CampaignsController extends AppController
     public function queryExample1()
     {
         $query = $this->Campaigns->find()
-		    ->select(['Campaigns.name', 'Campaigns.status'])
-		    ->where(['Campaigns.status !=' => 'new'])
-		    ->order(['Campaigns.name' => 'asc'])
-		    ->limit(10);
+            ->select(['Campaigns.name', 'Campaigns.status'])
+            ->where(['Campaigns.status !=' => 'new'])
+            ->order(['Campaigns.name' => 'asc'])
+            ->limit(10);
         debug($query->toArray());
         $this->render(false);
     }
