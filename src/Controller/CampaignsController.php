@@ -139,10 +139,9 @@ class CampaignsController extends AppController
 
     public function dashboard()
     {
-        $campaigns = $this->Campaigns->find()
-            ->where([
-                'Campaigns.status' => CampaignsTable::STATUS_NEW,
-                ]);
+        $campaigns = $this->Campaigns
+            ->find('new')
+            ->find('latest10');
         $this->set(compact('campaigns'));
     }
 
