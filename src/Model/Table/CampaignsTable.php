@@ -7,6 +7,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Event\Event;
+use Cake\I18n\Time;
 use Cake\Log\Log;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Validation\Validator;
@@ -95,7 +96,17 @@ class CampaignsTable extends Table
         $validator
             ->requirePresence('status', 'create')
             ->notEmpty('status')
-            ->inList('status', $validStatuses, $invalidMsg);
+            ->inList('status', $validStatuses, $invalidMsg)
+            ->add('status', 'inProgressOnlyWeekdays', [
+                'rule' => function ($value, $context) {
+                    return $value !== 'in-progress';
+                },
+                'on' => function ($context) {
+                    $now = Time::now();
+                    return ($now->isSaturday() || $now->isSunday());
+                },
+                'message' => __('Campaigns can only be set as in-progress in week days')
+            ]);
 
         return $validator;
     }
