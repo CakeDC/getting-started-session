@@ -34,4 +34,9 @@ class User extends Entity
         '*' => true,
         'id' => false
     ];
+
+    protected function _getFullName()
+	{
+		return $this->first_name . ' ' . $this->last_name;
+	}
 }
