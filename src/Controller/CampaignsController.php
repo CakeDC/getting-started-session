@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Table\CampaignsTable;
 
 /**
  * Campaigns Controller
@@ -132,5 +133,14 @@ class CampaignsController extends AppController
             ->where(['Campaigns.status' => 'completed']);
         debug($query->toArray());
         $this->render(false);
+    }
+
+    public function dashboard()
+    {
+        $campaigns = $this->Campaigns->find()
+            ->where([
+                'Campaigns.status' => CampaignsTable::STATUS_NEW,
+                ]);
+        $this->set(compact('campaigns'));
     }
 }
