@@ -44,8 +44,11 @@ class CampaignsTable extends Table
 
         $this->belongsTo('Templates', [
             'foreignKey' => 'template_id',
-            'joinType' => 'INNER'
-        ]);
+            'joinType' => 'INNER',
+            'conditions' => [
+                'Templates.active' => true,
+                ]
+            ]);
         $this->hasMany('Logs', [
             'foreignKey' => 'campaign_id'
         ]);
