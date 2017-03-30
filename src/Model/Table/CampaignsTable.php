@@ -26,6 +26,10 @@ use Cake\Validation\Validator;
 class CampaignsTable extends Table
 {
 
+    const STATUS_NEW = 'new';
+    const STATUS_IN_PROGRESS = 'in-progress';
+    const STATUS_COMPLETED = 'completed';
+
     /**
      * Initialize method
      *
@@ -78,6 +82,17 @@ class CampaignsTable extends Table
         $validator
             ->requirePresence('status', 'create')
             ->notEmpty('status');
+
+        $validStatuses = [
+                self::STATUS_NEW,
+                self::STATUS_IN_PROGRESS,
+                self::STATUS_COMPLETED,
+                ];
+        $invalidMsg = __('Invalid status, please use {0}', \Cake\Utility\Text::toList($validStatuses, __('or')));
+        $validator
+            ->requirePresence('status', 'create')
+            ->notEmpty('status')
+            ->inList('status', $validStatuses, $invalidMsg);
 
         return $validator;
     }
