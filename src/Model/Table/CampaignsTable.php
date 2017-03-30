@@ -121,12 +121,24 @@ class CampaignsTable extends Table
         $campaign = $this->get($id, [
             'contain' => ['Templates', 'MailingLists.Users']
         ]);
+
+        $campaign->status = self::STATUS_IN_PROGRESS;
+        if (!$this->save($campaign)) {
+            throw new \OutOfBoundsException('Unable to update campaign status');
+        }
+
         // NOTE: this query should be improved, left as a simple example
         foreach ($campaign->mailing_lists as $mailing_list) {
             foreach ($mailing_list->users as $user) {
                 $this->emailMerge($campaign, $user);
             }
         }
+
+        $campaign->status = self::STATUS_COMPLETED;
+        if (!$this->save($campaign)) {
+            throw new \OutOfBoundsException('Unable to update campaign status');
+        }
+
         return true;
     }
 
