@@ -170,4 +170,19 @@ class CampaignsTable extends Table
         $message = sprintf('Campaign %s status changed to "%s"', $campaign['name'], $campaign['status']);
         Log::info($message);
     }
+
+    public function findNew(Query $q, array $options)
+    {
+        return $q->where([
+            $this->aliasField('status') => self::STATUS_NEW,
+            ]);
+    }
+
+    public function findLatest10(Query $q, array $options)
+    {
+        return $q->order([
+            $this->aliasField('created') => 'desc',
+            ])
+            ->limit(10);
+    }
 }
