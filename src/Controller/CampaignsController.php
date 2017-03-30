@@ -143,4 +143,17 @@ class CampaignsController extends AppController
                 ]);
         $this->set(compact('campaigns'));
     }
+
+    public function send($id = null)
+    {
+        if (!$this->request->is('post')) {
+            throw new \Cake\Network\Exception\MethodNotAllowedException();
+        }
+        if (!$this->Campaigns->send($id)) {
+            $this->Flash->error(__('Send campaign failed'));
+        } else {
+            $this->Flash->success(__('Send campaign success!'));
+        }
+        return $this->redirect(['action' => 'dashboard']);
+    }
 }
