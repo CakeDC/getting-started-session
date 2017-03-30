@@ -124,4 +124,13 @@ class CampaignsController extends AppController
         debug($query->toArray());
         $this->render(false);
     }
+
+    public function queryContainExample()
+    {
+        $query = $this->Campaigns->find()
+            ->contain('MailingLists.Users')
+            ->where(['Campaigns.status' => 'completed']);
+        debug($query->toArray());
+        $this->render(false);
+    }
 }
