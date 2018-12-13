@@ -7,6 +7,6 @@ Join our next free CakePHP 3 Getting Started Session here https://training.cakep
 License
 -------
 
-Copyright 2017 Cake Development Corporation (CakeDC). All rights reserved.
+Copyright 2017-2018 Cake Development Corporation (https://www.cakedc.com). All rights reserved.
 
 Licensed under the [MIT](http://www.opensource.org/licenses/mit-license.php) License. Redistributions of the source code included in this repository must retain the copyright notice found in each file.
